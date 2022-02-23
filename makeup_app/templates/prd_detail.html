@@ -1,9 +1,47 @@
 <h1>Product Detail</h1>
 
 <h2>{{product.name}}</h2>
-<h3>{{product.rating}}</h3>
+<h3>Rating: {{product.rating}}/5</h3>
 <p>{{product.review}}</p>
 <a href="/">Home</a>
 <p><form method='POST' action= "/product/{{product.id}}/delete">
     <button class="mx-2" type='submit'>Delete</button>
 </form></p>
+
+<form method="POST" action="{{ url_for('main.prd_detail', product_id = product.id) }}">
+
+        <fieldset>
+            {{ form.csrf_token }}
+
+            <legend>Update a Product</legend>
+
+            {{form.name.label}}
+            {{form.name}}
+            <ul>
+                {% for error in form.name.errors %}
+                    <li class="error">{{ error }}</li>
+                {% endfor %}
+            </ul>
+
+            {{form.rating.label}}
+            {{form.rating}}
+            <ul>
+                {% for error in form.rating.errors %}
+                    <li class="error">{{ error }}</li>
+                {% endfor %}
+            </ul>
+
+            {{form.review.label}}
+            {{form.review}}
+            <ul>
+                {% for error in form.review.errors %}
+                    <li class="error">{{ error }}</li>
+                {% endfor %}
+            </ul>
+
+            {{form.submit}}
+        </fieldset>
+
+</form>
+
+

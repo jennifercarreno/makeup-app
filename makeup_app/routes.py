@@ -32,7 +32,18 @@ def new_product():
 @main.route('/product/<product_id>', methods=['GET', 'POST'])
 def prd_detail(product_id):
     product = Product.query.get(product_id)
-    return render_template('prd_detail.html', product = product)
+    form = ProductForm()
+
+    if form.validate_on_submit():
+        form.populate_obj(product)
+        db.session.commit()
+        flash('Success! Item Updated')
+        product = Product.query.get(product_id)
+        return redirect(url_for('main.prd_detail', product = product, product_id = product_id))
+    else:
+        product = Product.query.get(product_id)
+        print("form not submitted :(")
+        return render_template('prd_detail.html', product = product, form=form)
 
 @main.route('/product/<product_id>/delete', methods=['POST'])
 def prd_delete(product_id):
