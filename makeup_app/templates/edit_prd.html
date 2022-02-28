@@ -1,38 +1,40 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>New Product</h1>
 
-<form method="POST" action="{{ url_for('main.new_product') }}">
+<h1>Edit {{product.name}}</h1>
+<form method="POST" action="{{ url_for('main.prd_edit', product_id = product.id) }}">
+
     <fieldset>
-        <legend>Please enter your information:</legend>
-            {{ form.csrf_token }}
+        {{ form.csrf_token }}
 
-            {{form.name.label}}
-            {{form.name}}
+        <legend>Update a Product</legend>
+
+        {{form.name.label}}
+        {{form.name}}
             <ul>
                 {% for error in form.name.errors %}
                     <li class="error">{{ error }}</li>
                 {% endfor %}
             </ul>
 
-            {{form.rating.label}}
-            {{form.rating}}
+        {{form.rating.label}}
+        {{form.rating}}
             <ul>
                 {% for error in form.rating.errors %}
                     <li class="error">{{ error }}</li>
                 {% endfor %}
             </ul>
 
-            {{form.review.label}}
-            {{form.review}}
+        {{form.review.label}}
+        {{form.review}}
             <ul>
                 {% for error in form.review.errors %}
                     <li class="error">{{ error }}</li>
                 {% endfor %}
             </ul>
 
-            {{form.submit}}
-        </fieldset>
+        {{form.submit}}
+    </fieldset>
 
 </form>
 {% endblock %}

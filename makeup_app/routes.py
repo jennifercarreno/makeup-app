@@ -1,10 +1,13 @@
+from crypt import methods
 from flask import Blueprint, request, render_template, redirect, url_for, flash
+from flask_login import login_user, logout_user, login_required, current_user
 from makeup_app.models import User, Product, Comment
-from makeup_app.extensions import app, db
-from makeup_app.forms import ProductForm, CommentForm
+from makeup_app.extensions import app, db, bcrypt
+from makeup_app.forms import ProductForm, CommentForm, SignUpForm, LoginForm
 from sqlalchemy import delete
 
 main = Blueprint("main", __name__)
+auth = Blueprint("auth", __name__)
 
 @main.route('/')
 def homepage():
@@ -12,6 +15,7 @@ def homepage():
     return render_template('home.html', prds= all_prds)
 
 @main.route('/new_product',methods=['GET', 'POST'])
+@login_required
 def new_product():
     form = ProductForm()
 
@@ -19,7 +23,8 @@ def new_product():
         new_product = Product(
             name = form.name.data,
             rating = form.rating.data,
-            review = form.review.data
+            review = form.review.data,
+            created_by = current_user
         )
         db.session.add(new_product)
         db.session.commit()
@@ -32,38 +37,21 @@ def new_product():
 @main.route('/product/<product_id>', methods=['GET', 'POST'])
 def prd_detail(product_id):
     product = Product.query.get(product_id)
-    form = ProductForm()
+    
     comment_form = CommentForm()
     prd_comments = []
-
     all_comments = Comment.query.all()
-
-    if form.validate_on_submit():
-        form.populate_obj(product)
-        db.session.commit()
-        flash('Success! Item Updated')
-        product = Product.query.get(product_id)
-
-        for comment in all_comments:
-            if comment.prd == product_id:
-                prd_comments.append(comment)
-                print(prd_comments)
-
-        return redirect(url_for('main.prd_detail', product = product, product_id = product_id, comments=prd_comments))
-    else:
-        product = Product.query.get(product_id)
-
-        for comment in all_comments:
+    for comment in all_comments:
             print(comment.prd)
             print(product_id)
             if comment.prd == int(product_id):
                 prd_comments.append(comment)
 
-        print("form not submitted :(")
-        print(prd_comments)
-        return render_template('prd_detail.html', product = product, form=form, comment_form=comment_form, comments=prd_comments)
+   
+    return render_template('prd_detail.html', product = product, comment_form=comment_form, comments=prd_comments)
 
 @main.route('/product/<product_id>/delete', methods=['POST'])
+@login_required
 def prd_delete(product_id):
     sql2 = delete(Product).where(Product.id == product_id)
 
@@ -72,8 +60,25 @@ def prd_delete(product_id):
     flash('Product Deleted')
     return redirect(url_for('main.homepage'))
 
+@main.route('/product/<product_id>/edit', methods=['GET', 'POST'])
+@login_required
+def prd_edit(product_id):
+    product = Product.query.get(product_id)
+    form = ProductForm()
+    if form.validate_on_submit():
+        form.populate_obj(product)
+        db.session.commit()
+        flash('Success! Item Updated')
+        product = Product.query.get(product_id)
+
+        return redirect(url_for('main.prd_detail', product = product, product_id = product_id))
+    else:
+        return render_template('edit_prd.html', form = form, product = product)
+
+
 # comments 
 @main.route('/new_comment/<product_id>', methods=['POST'])
+@login_required
 def new_comment(product_id):
     product = Product.query.get(product_id)
     form = CommentForm()
@@ -96,10 +101,46 @@ def new_comment(product_id):
         return render_template('prd_detail.html', product = product, form=prd_form, comment_form=form)
 
 @main.route('/comment/<comment_id>/delete', methods=['POST'])
+@login_required
 def comment_delete(comment_id):
     sql2 = delete(Comment).where(Comment.id == comment_id)
 
     db.session.execute(sql2)
     db.session.commit()
     flash('Comment Deleted')
+    return redirect(url_for('main.homepage'))
+
+@auth.route('/signup', methods=['GET', 'POST'])
+def signup():
+    print('in signup')
+    form = SignUpForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = User(
+            username=form.username.data,
+            password=hashed_password
+        )
+        db.session.add(user)
+        db.session.commit()
+        flash('Account Created.')
+        print('created')
+        return redirect(url_for('auth.login'))
+    print(form.errors)
+    return render_template('signup.html', form=form)
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        login_user(user, remember=True)
+        next_page = request.args.get('next')
+        return redirect(next_page if next_page else url_for('main.homepage'))
+    return render_template('login.html', form=form)
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
     return redirect(url_for('main.homepage'))

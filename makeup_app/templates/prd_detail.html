@@ -1,54 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
 <h1>Product Detail</h1>
 
 <h2>{{product.name}}</h2>
+<h3>created by: {{product.created_by.username}}</h3>
 <h3>Rating: {{product.rating}}/5</h3>
 <p>{{product.review}}</p>
 <a href="/">Home</a>
 <p><form method='POST' action= "/product/{{product.id}}/delete">
     <button class="mx-2" type='submit'>Delete</button>
 </form></p>
+<p><form method='POST' action= "/product/{{product.id}}/edit">
+    <button class="mx-2" type='submit'>Edit</button>
+</form></p>
 
-<!-- TODO: add js to show up only when button clicked -->
-<form method="POST" action="{{ url_for('main.prd_detail', product_id = product.id) }}">
-
-    <fieldset>
-        {{ form.csrf_token }}
-
-        <legend>Update a Product</legend>
-
-        {{form.name.label}}
-        {{form.name}}
-            <ul>
-                {% for error in form.name.errors %}
-                    <li class="error">{{ error }}</li>
-                {% endfor %}
-            </ul>
-
-        {{form.rating.label}}
-        {{form.rating}}
-            <ul>
-                {% for error in form.rating.errors %}
-                    <li class="error">{{ error }}</li>
-                {% endfor %}
-            </ul>
-
-        {{form.review.label}}
-        {{form.review}}
-            <ul>
-                {% for error in form.review.errors %}
-                    <li class="error">{{ error }}</li>
-                {% endfor %}
-            </ul>
-
-        {{form.submit}}
-    </fieldset>
-
-</form>
 
 <h3>Reply to this Review</h3>
 <form method="POST" action="/new_comment/{{product.id}}">
     <fieldset>
-        {{form.csrf_token}}
+        {{comment_form.csrf_token}}
 
         {{ comment_form.name.label}}
         {{ comment_form.name}}
@@ -79,3 +49,4 @@
     </form></p>
 </div>
 {% endfor %}
+{% endblock %}
