@@ -20,14 +20,6 @@
     <fieldset>
         {{comment_form.csrf_token}}
 
-        {{ comment_form.name.label}}
-        {{ comment_form.name}}
-        <ul>
-            {% for error in comment_form.name.errors %}
-                <li class="error">{{ error }}</li>
-            {% endfor %}
-        </ul>
-
         {{ comment_form.comment.label}}
         {{ comment_form.comment}}
         <ul>
@@ -42,7 +34,7 @@
 
 {% for comment in comments %}
 <div class="card">
-    <h3>{{comment.name}}</h3>
+    <h3>{{comment.created_by.username}}</h3>
     <p>{{comment.comment}}</p>
     <p><form method='POST' action= "/comment/{{comment.id}}/delete">
         <button class="mx-2" type='submit'>Delete</button>

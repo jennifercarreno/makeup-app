@@ -86,9 +86,10 @@ def new_comment(product_id):
 
     if form.validate_on_submit():
         new_comment = Comment(
-            name = form.name.data,
             comment = form.comment.data,
-            prd = product_id
+            prd = product_id,
+            created_by = current_user
+
         )
 
         db.session.add(new_comment)

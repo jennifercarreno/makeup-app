@@ -18,7 +18,6 @@ class ProductForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class CommentForm(FlaskForm):
-    name = StringField('name', validators=[DataRequired()])
     comment = TextAreaField('Comment', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
