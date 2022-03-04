@@ -36,7 +36,7 @@
 </form> <br>
 
 {% for comment in comments %}
-<div class="card my-2">
+<div class="card my-2 p-2">
     <h3>{{comment.created_by.username}}</h3>
     <p>{{comment.comment}}</p>
     {% if current_user == product.created_by %}

@@ -12,7 +12,7 @@ from makeup_app.extensions import bcrypt
 class ProductForm(FlaskForm):
     """Form for adding a Product."""
 
-    name = StringField('Name', validators=[DataRequired()])
+    name = StringField('Product Name', validators=[DataRequired()])
     rating = IntegerField('Rating', validators=[DataRequired()])
     review = TextAreaField('Review', validators=[DataRequired()])
     submit = SubmitField('Submit')

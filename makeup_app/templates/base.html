@@ -22,6 +22,7 @@
                 <div class="row">
                 {% if current_user.is_authenticated %}
                 <!-- stuff you only want to show to logged-in users -->
+                <p class="nav-link">{{current_user.username}}</p>
                 <a href="/logout" class="nav-link">Log Out</a>
 
                 {% else %}
