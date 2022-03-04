@@ -64,7 +64,7 @@ def prd_delete(product_id):
 @login_required
 def prd_edit(product_id):
     product = Product.query.get(product_id)
-    form = ProductForm()
+    form = ProductForm(obj = product)
     if form.validate_on_submit():
         form.populate_obj(product)
         db.session.commit()

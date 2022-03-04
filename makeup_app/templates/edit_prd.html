@@ -1,40 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="container">
+    <h1>Edit {{product.name}}</h1>
+    <form method="POST" action="{{ url_for('main.prd_edit', product_id = product.id) }}">
+    
+        <fieldset>
+            {{ form.csrf_token }}
+    
+            <legend>Update a Product</legend>
+    
+            {{form.name.label}}
+            {{form.name}}
+                <ul>
+                    {% for error in form.name.errors %}
+                        <li class="error">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+    
+            {{form.rating.label}}
+            {{form.rating}}
+                <ul>
+                    {% for error in form.rating.errors %}
+                        <li class="error">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+    
+            {{form.review.label}}
+            {{form.review}}
+                <ul>
+                    {% for error in form.review.errors %}
+                        <li class="error">{{ error }}</li>
+                    {% endfor %}
+                </ul>
+    
+            {{form.submit}}
+        </fieldset>
+    
+    </form>
+</div>
 
-<h1>Edit {{product.name}}</h1>
-<form method="POST" action="{{ url_for('main.prd_edit', product_id = product.id) }}">
-
-    <fieldset>
-        {{ form.csrf_token }}
-
-        <legend>Update a Product</legend>
-
-        {{form.name.label}}
-        {{form.name}}
-            <ul>
-                {% for error in form.name.errors %}
-                    <li class="error">{{ error }}</li>
-                {% endfor %}
-            </ul>
-
-        {{form.rating.label}}
-        {{form.rating}}
-            <ul>
-                {% for error in form.rating.errors %}
-                    <li class="error">{{ error }}</li>
-                {% endfor %}
-            </ul>
-
-        {{form.review.label}}
-        {{form.review}}
-            <ul>
-                {% for error in form.review.errors %}
-                    <li class="error">{{ error }}</li>
-                {% endfor %}
-            </ul>
-
-        {{form.submit}}
-    </fieldset>
-
-</form>
 {% endblock %}
