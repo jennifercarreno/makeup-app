@@ -12,22 +12,24 @@
             {% for message in get_flashed_messages() %}
                 <p>{{ message }}</p>
             {% endfor %}
-            <nav>
-                <a href="/">Home</a>
-                <div>
-                    <a href="/new_product">New Product</a>
+            <nav class="navbar">
+                <div class="row">
+                    <a href="/" class="nav-link">Home</a>
+
+                    <a href="/new_product" class="nav-link">New Product</a>
 
                 </div>
+                <div class="row">
                 {% if current_user.is_authenticated %}
                 <!-- stuff you only want to show to logged-in users -->
-                <a href="/logout">Log Out</a>
+                <a href="/logout" class="nav-link">Log Out</a>
 
                 {% else %}
                     <!-- stuff you only want to show to logged-out users -->
-                    <a href="/login">Log In</a>
-                    <a href="/signup">Sign Up</a>
+                    <a href="/login" class="nav-link">Log In</a>
+                    <a href="/signup" class="nav-link">Sign Up</a>
                 {% endif %}
-                
+            </div>
             </nav>
             {% block content %}{% endblock %}
         </div>

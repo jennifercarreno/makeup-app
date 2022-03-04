@@ -1,32 +1,36 @@
 <!-- login.html -->
 {% extends 'base.html' %}
 {% block content %}
+<div class="container text-center">
+    <h1>Log In</h1>
 
-<h1>Log In</h1>
+    <form action="/login" method="POST">
+        {{ form.csrf_token }}
+        <fieldset>
+            <legend>Enter your credentials</legend>
+    
+            {{ form.username.label }}
+            {{ form.username }}
+            <ul>
+            {% for error in form.username.errors %}
+                <li class="error">{{ error }}</li>
+            {% endfor %}
+            </ul>
+    
+            {{ form.password.label }}
+            {{ form.password }}
+            <ul>
+            {% for error in form.password.errors %}
+                <li class="error">{{ error }}</li>
+            {% endfor %}
+            </ul>
+            <a href="/signup" class="nav-link">Sign Up</a>
+            {{ form.submit }}
+        </fieldset>
+    </form>
 
-<form action="/login" method="POST">
-    {{ form.csrf_token }}
-    <fieldset>
-        <legend>Enter your credentials</legend>
+   
+</div>
 
-        {{ form.username.label }}
-        {{ form.username }}
-        <ul>
-        {% for error in form.username.errors %}
-            <li class="error">{{ error }}</li>
-        {% endfor %}
-        </ul>
-
-        {{ form.password.label }}
-        {{ form.password }}
-        <ul>
-        {% for error in form.password.errors %}
-            <li class="error">{{ error }}</li>
-        {% endfor %}
-        </ul>
-
-        {{ form.submit }}
-    </fieldset>
-</form>
 
 {% endblock %}

@@ -1,22 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Product Detail</h1>
 
-<h2>{{product.name}}</h2>
-<h3>created by: {{product.created_by.username}}</h3>
-<h3>Rating: {{product.rating}}/5</h3>
-<p>{{product.review}}</p>
-<a href="/">Home</a>
-<p><form method='POST' action= "/product/{{product.id}}/delete">
-    <button class="mx-2" type='submit'>Delete</button>
-</form></p>
-<p><form method='POST' action= "/product/{{product.id}}/edit">
-    <button class="mx-2" type='submit'>Edit</button>
-</form></p>
+<h1 class="text-center">{{product.name}}</h1>
+<div class="container">
+    <h3>created by: {{product.created_by.username}}</h3>
+    <h3>Rating: {{product.rating}}/5</h3>
+    <p>{{product.review}}</p>
 
+    {% if current_user == product.created_by %}
+    <div class="row">
+        <p><form method='POST' action= "/product/{{product.id}}/delete">
+            <button class="mx-2" type='submit'>Delete</button>
+        </form></p>
+        <p><form method='POST' action= "/product/{{product.id}}/edit">
+            <button class="mx-2" type='submit'>Edit</button>
+        </form></p>
+    </div><br>
+    {% endif %}
 
-<h3>Reply to this Review</h3>
-<form method="POST" action="/new_comment/{{product.id}}">
+    <h3>Reply to this Review</h3>
+    <form method="POST" action="/new_comment/{{product.id}}">
     <fieldset>
         {{comment_form.csrf_token}}
 
@@ -30,15 +33,27 @@
 
         {{ comment_form.submit}}
     </fieldset>
-</form>
+</form> <br>
 
 {% for comment in comments %}
-<div class="card">
+<div class="card my-2">
     <h3>{{comment.created_by.username}}</h3>
     <p>{{comment.comment}}</p>
+    {% if current_user == product.created_by %}
+
     <p><form method='POST' action= "/comment/{{comment.id}}/delete">
         <button class="mx-2" type='submit'>Delete</button>
     </form></p>
+
+    {% endif %}
 </div>
 {% endfor %}
+</div>
+
+
+
+
+
+
+
 {% endblock %}
