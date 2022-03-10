@@ -10,10 +10,13 @@
 
     {% for prd in prds %}
     <div>
-        <h3><a href="/product/{{prd.id}}">{{ prd.name }}</a></h3>
+        <h3><a href="/product/{{prd.get('id')}}">{{ prd.get("name") }}</a></h3>
     </div>
     {% endfor %}
 </div>
 
-
+<form action="/search" method="POST">
+    <input type="text" name="search">
+    <button type="submit">Search</button>
+</form>
 {% endblock %}

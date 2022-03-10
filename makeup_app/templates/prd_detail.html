@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1 class="text-center">{{product.name}}</h1>
+<h1 class="text-center">{{product.get("name")}}</h1>
 <div class="container">
-    <h3>created by: {{product.created_by.username}}</h3>
-    <h3>Rating: {{product.rating}}/5</h3>
-    <p>{{product.review}}</p>
+    <h3>Brand: {{product.get("brand")}}</h3>
+    <p>{{product.get("product_type")}}</p>
+    <p>{{ product.get("category")}}</p>
 
-    {% if current_user == product.created_by %}
+    <!-- {% if current_user == product.created_by %}
     <div class="row">
         <p><form method='POST' action= "/product/{{product.id}}/delete">
             <button class="mx-2" type='submit'>Delete</button>
@@ -16,7 +16,7 @@
             <button class="mx-2" type='submit'>Edit</button>
         </form></p>
     </div><br>
-    {% endif %}
+    {% endif %} -->
 
     <h3>Reply to this Review</h3>
     <form method="POST" action="/new_comment/{{product.id}}">

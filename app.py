@@ -1,5 +1,7 @@
+import requests
 from makeup_app.extensions import app, db
 from makeup_app.routes import main, auth
+
 
 app.register_blueprint(main)
 app.register_blueprint(auth)

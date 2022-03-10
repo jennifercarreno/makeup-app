@@ -5,14 +5,17 @@ from makeup_app.models import User, Product, Comment
 from makeup_app.extensions import app, db, bcrypt
 from makeup_app.forms import ProductForm, CommentForm, SignUpForm, LoginForm
 from sqlalchemy import delete
+import requests, json
 
 main = Blueprint("main", __name__)
 auth = Blueprint("auth", __name__)
+api = requests.get('http://makeup-api.herokuapp.com/api/v1/products.json')
+products = json.loads(api.text)
+
 
 @main.route('/')
 def homepage():
-    all_prds = Product.query.all()
-    return render_template('home.html', prds= all_prds)
+    return render_template('home.html', prds= products)
 
 @main.route('/new_product',methods=['GET', 'POST'])
 @login_required
@@ -36,19 +39,20 @@ def new_product():
 
 @main.route('/product/<product_id>', methods=['GET', 'POST'])
 def prd_detail(product_id):
-    product = Product.query.get(product_id)
-    
-    comment_form = CommentForm()
-    prd_comments = []
-    all_comments = Comment.query.all()
-    for comment in all_comments:
-            print(comment.prd)
-            print(product_id)
-            if comment.prd == int(product_id):
-                prd_comments.append(comment)
+    for i in range(len(products)):
+        if products[i].get('id') == int(product_id):
+            product = products[i]
 
-   
-    return render_template('prd_detail.html', product = product, comment_form=comment_form, comments=prd_comments)
+            comment_form = CommentForm()
+            prd_comments = []
+            all_comments = Comment.query.all()
+            for comment in all_comments:
+           
+                if comment.prd == int(product_id):
+                    prd_comments.append(comment)
+    return render_template('prd_detail.html', product = product, comment_form = comment_form, comments = prd_comments)
+
+    
 
 @main.route('/product/<product_id>/delete', methods=['POST'])
 @login_required
@@ -145,3 +149,13 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('main.homepage'))
+
+@main.route('/search', methods=['GET', 'POST'])
+def search():
+    prds = []
+    search = request.form['search']
+    for i in range(len(products)):
+        if products[i].get("name") == search:
+            prds.append(products[i])
+            print(prds)
+    return render_template('home.html', prds= prds)
