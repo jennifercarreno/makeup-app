@@ -15,27 +15,27 @@ products = json.loads(api.text)
 
 @main.route('/')
 def homepage():
-    return render_template('home.html', prds= products)
+    return render_template('home.html', prds= products[:15] )
 
-@main.route('/new_product',methods=['GET', 'POST'])
-@login_required
-def new_product():
-    form = ProductForm()
+# @main.route('/new_product',methods=['GET', 'POST'])
+# @login_required
+# def new_product():
+#     form = ProductForm()
 
-    if form.validate_on_submit():
-        new_product = Product(
-            name = form.name.data,
-            rating = form.rating.data,
-            review = form.review.data,
-            created_by = current_user
-        )
-        db.session.add(new_product)
-        db.session.commit()
+#     if form.validate_on_submit():
+#         new_product = Product(
+#             name = form.name.data,
+#             rating = form.rating.data,
+#             review = form.review.data,
+#             created_by = current_user
+#         )
+#         db.session.add(new_product)
+#         db.session.commit()
 
-        flash('Success! New Product Added')
-        return redirect(url_for('main.prd_detail', product_id = new_product.id))
-    else: 
-        return render_template('new_prd.html', form = form)
+#         flash('Success! New Product Added')
+#         return redirect(url_for('main.prd_detail', product_id = new_product.id))
+#     else: 
+#         return render_template('new_prd.html', form = form)
 
 @main.route('/product/<product_id>', methods=['GET', 'POST'])
 def prd_detail(product_id):
@@ -54,30 +54,30 @@ def prd_detail(product_id):
 
     
 
-@main.route('/product/<product_id>/delete', methods=['POST'])
-@login_required
-def prd_delete(product_id):
-    sql2 = delete(Product).where(Product.id == product_id)
+# @main.route('/product/<product_id>/delete', methods=['POST'])
+# @login_required
+# def prd_delete(product_id):
+#     sql2 = delete(Product).where(Product.id == product_id)
 
-    db.session.execute(sql2)
-    db.session.commit()
-    flash('Product Deleted')
-    return redirect(url_for('main.homepage'))
+#     db.session.execute(sql2)
+#     db.session.commit()
+#     flash('Product Deleted')
+#     return redirect(url_for('main.homepage'))
 
-@main.route('/product/<product_id>/edit', methods=['GET', 'POST'])
-@login_required
-def prd_edit(product_id):
-    product = Product.query.get(product_id)
-    form = ProductForm(obj = product)
-    if form.validate_on_submit():
-        form.populate_obj(product)
-        db.session.commit()
-        flash('Success! Item Updated')
-        product = Product.query.get(product_id)
+# @main.route('/product/<product_id>/edit', methods=['GET', 'POST'])
+# @login_required
+# def prd_edit(product_id):
+#     product = Product.query.get(product_id)
+#     form = ProductForm(obj = product)
+#     if form.validate_on_submit():
+#         form.populate_obj(product)
+#         db.session.commit()
+#         flash('Success! Item Updated')
+#         product = Product.query.get(product_id)
 
-        return redirect(url_for('main.prd_detail', product = product, product_id = product_id))
-    else:
-        return render_template('edit_prd.html', form = form, product = product)
+#         return redirect(url_for('main.prd_detail', product = product, product_id = product_id))
+#     else:
+#         return render_template('edit_prd.html', form = form, product = product)
 
 
 # comments 
@@ -155,7 +155,13 @@ def search():
     prds = []
     search = request.form['search']
     for i in range(len(products)):
+
         if products[i].get("name") == search:
             prds.append(products[i])
-            print(prds)
+        elif products[i].get("brand") == search:
+            prds.append(products[i])
+        elif products[i].get("product_type") == search:
+            prds.append(products[i])
+
+
     return render_template('home.html', prds= prds)

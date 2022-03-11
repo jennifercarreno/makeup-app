@@ -4,19 +4,30 @@
 <h1 class="text-center">Jennifer's Makeup App</h1>
 
 <p class="text-center"><em>The best place to find the hottest makeup products!</em></p>
+<div class="text-center mx-auto">
+    <form action="/search" method="POST">
+        <input type="text" name="search">
+        <button type="submit">Search</button>
+    </form>
+
+    <div class="row mx-auto justify-content-center my-2">
+        <button>Eyes</button>
+        <button>Face</button>
+        <button>Lips</button>
+
+    </div>
+</div>
 
 <div class="container">
     <h2>All Products</h2>
 
     {% for prd in prds %}
     <div>
-        <h3><a href="/product/{{prd.get('id')}}">{{ prd.get("name") }}</a></h3>
+        <h3><a href="/product/{{prd.get('id')}}">{{ prd.get("brand")}} - {{ prd.get("name") }}</a></h3>
     </div>
     {% endfor %}
+   
 </div>
 
-<form action="/search" method="POST">
-    <input type="text" name="search">
-    <button type="submit">Search</button>
-</form>
+
 {% endblock %}
