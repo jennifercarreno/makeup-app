@@ -13,11 +13,29 @@ auth = Blueprint("auth", __name__)
 api = requests.get('http://makeup-api.herokuapp.com/api/v1/products.json')
 products = json.loads(api.text)
 
-
+# home page
 @main.route('/')
 def homepage():
     return render_template('home.html', prds=products[:12] )
 
+# searches
+@main.route('/search', methods=['GET', 'POST'])
+def search():
+    prds = []
+    search = request.form['search']
+    for i in range(len(products)):
+
+        if products[i].get("name") == search.lower():
+            prds.append(products[i])
+        elif products[i].get("brand") == search.lower():
+            prds.append(products[i])
+        elif products[i].get("product_type") == search.lower():
+            prds.append(products[i])
+
+    return render_template('home.html', prds= prds)
+
+
+# creates a new review
 @main.route('/new_review/<product_id>', methods=['GET', 'POST'])
 @login_required
 def new_review(product_id):
@@ -46,7 +64,7 @@ def new_review(product_id):
                 # render_template('prd_detail.html', product_id = product_id, product = product, review_form = review_form)
         return "error in submitting review"   
 
-
+# displays a product
 @main.route('/product/<product_id>', methods=['GET', 'POST'])
 def prd_detail(product_id):
     review_form = ReviewForm()
@@ -70,35 +88,10 @@ def prd_detail(product_id):
                     prd_comments.append(comment)
     return render_template('prd_detail.html', product = product, comment_form = comment_form, review_form = review_form, comments = prd_comments, reviews = prd_reviews)
 
-    
-
-# @main.route('/product/<product_id>/delete', methods=['POST'])
-# @login_required
-# def prd_delete(product_id):
-#     sql2 = delete(Product).where(Product.id == product_id)
-
-#     db.session.execute(sql2)
-#     db.session.commit()
-#     flash('Product Deleted')
-#     return redirect(url_for('main.homepage'))
-
-# @main.route('/product/<product_id>/edit', methods=['GET', 'POST'])
-# @login_required
-# def prd_edit(product_id):
-#     product = Product.query.get(product_id)
-#     form = ProductForm(obj = product)
-#     if form.validate_on_submit():
-#         form.populate_obj(product)
-#         db.session.commit()
-#         flash('Success! Item Updated')
-#         product = Product.query.get(product_id)
-
-#         return redirect(url_for('main.prd_detail', product = product, product_id = product_id))
-#     else:
-#         return render_template('edit_prd.html', form = form, product = product)
-
 
 # comments 
+
+# creates a new comment
 @main.route('/new_comment/<product_id>', methods=['POST'])
 @login_required
 def new_comment(product_id):
@@ -123,6 +116,7 @@ def new_comment(product_id):
         print(" comment form not submitted ")
         return render_template('prd_detail.html', product = product, form=prd_form, comment_form=form)
 
+# deletes a comment
 @main.route('/comment/<comment_id>/delete', methods=['POST'])
 @login_required
 def comment_delete(comment_id):
@@ -133,6 +127,10 @@ def comment_delete(comment_id):
     flash('Comment Deleted')
     return redirect(url_for('main.homepage'))
 
+
+# authentication
+
+# sign up
 @auth.route('/signup', methods=['GET', 'POST'])
 def signup():
     print('in signup')
@@ -151,7 +149,7 @@ def signup():
     print(form.errors)
     return render_template('signup.html', form=form)
 
-
+# log in
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -162,24 +160,12 @@ def login():
         return redirect(next_page if next_page else url_for('main.homepage'))
     return render_template('login.html', form=form)
 
+# log out
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('main.homepage'))
 
-@main.route('/search', methods=['GET', 'POST'])
-def search():
-    prds = []
-    search = request.form['search']
-    for i in range(len(products)):
-
-        if products[i].get("name") == search:
-            prds.append(products[i])
-        elif products[i].get("brand") == search:
-            prds.append(products[i])
-        elif products[i].get("product_type") == search:
-            prds.append(products[i])
 
 
-    return render_template('home.html', prds= prds)
