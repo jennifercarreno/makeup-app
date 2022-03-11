@@ -7,9 +7,9 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(80), nullable = False)
     password = db.Column(db.String(80), nullable=False)
 
-class Product(db.Model):
+class Review(db.Model):
     id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(80), nullable = False)
+    prd_name = db.Column(db.String(80), nullable = False)
     rating = db.Column(db.Integer, nullable = False)
     review = db.Column(db.Text, nullable = False)
     created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))

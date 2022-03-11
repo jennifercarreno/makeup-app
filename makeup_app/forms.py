@@ -6,13 +6,12 @@ from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from wtforms.validators import DataRequired, Length, URL, ValidationError
 import bcrypt
 
-from makeup_app.models import User, Product
+from makeup_app.models import User
 from makeup_app.extensions import bcrypt
 
-class ProductForm(FlaskForm):
-    """Form for adding a Product."""
+class ReviewForm(FlaskForm):
+    """Form for creating a review."""
 
-    name = StringField('Product Name', validators=[DataRequired()])
     rating = IntegerField('Rating', validators=[DataRequired()])
     review = TextAreaField('Review', validators=[DataRequired()])
     submit = SubmitField('Submit')

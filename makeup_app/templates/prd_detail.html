@@ -7,33 +7,44 @@
     <p>{{product.get("product_type")}}</p>
     <p>{{ product.get("category")}}</p>
 
-    <!-- {% if current_user == product.created_by %}
-    <div class="row">
-        <p><form method='POST' action= "/product/{{product.id}}/delete">
-            <button class="mx-2" type='submit'>Delete</button>
-        </form></p>
-        <p><form method='POST' action= "/product/{{product.id}}/edit">
-            <button class="mx-2" type='submit'>Edit</button>
-        </form></p>
-    </div><br>
-    {% endif %} -->
+    <h3>Leave a Review</h3>
 
-    <h3>Reply to this Review</h3>
-    <form method="POST" action="/new_comment/{{product.id}}">
+    <form method='POST' action="/new_review/{{product.get('id')}}">
     <fieldset>
-        {{comment_form.csrf_token}}
+    
+        {{ review_form.csrf_token }}
 
-        {{ comment_form.comment.label}}
-        {{ comment_form.comment}}
+
+        {{ review_form.rating.label}}
+        {{ review_form.rating}}
         <ul>
-            {% for error in comment_form.comment.errors %}
+            {% for error in review_form.rating.errors %}
                 <li class="error">{{ error }}</li>
             {% endfor %}
         </ul>
 
-        {{ comment_form.submit}}
+        {{ review_form.review.label}}
+        {{ review_form.review}}
+        <ul>
+            {% for error in review_form.review.errors %}
+                <li class="error">{{ error }}</li>
+            {% endfor %}
+        </ul>
+
+        {{ review_form.submit }}
     </fieldset>
 </form> <br>
+
+{% for review in reviews %}
+<div class="card my-2 p-2">
+    <h3>{{review.created_by.username}}</h3>
+    <p>{{review.rating}}</p>
+    <p>{{review.review}}</p>
+    {% if current_user == review.created_by %}
+
+    {% endif %}
+</div>
+{% endfor %}
 
 {% for comment in comments %}
 <div class="card my-2 p-2">

@@ -4,28 +4,49 @@
 <h1 class="text-center">Jennifer's Makeup App</h1>
 
 <p class="text-center"><em>The best place to find the hottest makeup products!</em></p>
-<div class="text-center mx-auto">
-    <form action="/search" method="POST">
-        <input type="text" name="search">
+
+<!-- <div class="container text-center">
+    <form action="/search" method="POST" class="">
+        <input type="text" name="search" class="">
         <button type="submit">Search</button>
     </form>
 
-    <div class="row mx-auto justify-content-center my-2">
+    <div class="my-2">
         <button>Eyes</button>
-        <button>Face</button>
         <button>Lips</button>
+        <button>Face</button>
+    </div>
+</div> -->
 
+<div class="d-flex align-content-center flex-wrap jumbotron text-center">
+    <div class="container text-center">
+        <h3 class="card-title">Search by Product Name, Brand, or Product Type</h3>
+
+        <form action="/search" method="POST" class="">
+            <input type="text" name="search" class="">
+            <button type="submit">Search</button>
+        </form>
+    
+        <div class="my-2">
+            <button>Eyes</button>
+            <button>Lips</button>
+            <button>Face</button>
+        </div>
     </div>
 </div>
 
+
 <div class="container">
     <h2>All Products</h2>
-
+<div class="row">
     {% for prd in prds %}
-    <div>
+    <div class="card col-lg-3 py-3">
+        <img class="card-img-top" src="{{ prd.get('api_featured_image')}}">
         <h3><a href="/product/{{prd.get('id')}}">{{ prd.get("brand")}} - {{ prd.get("name") }}</a></h3>
     </div>
     {% endfor %}
+</div>
+    
    
 </div>
 
