@@ -52,7 +52,7 @@ def filter_eyes():
 @main.route('/filter/lips', methods=['GET', 'POST'])
 def filter_lips():
     prds = []
-    lips = ['lip liner', 'lipstick']
+    lips = ['lip_liner', 'lipstick']
     for i in range(len(lips)):
         for p in range(len(products)):
             if products[p].get('product_type') == lips[i]:

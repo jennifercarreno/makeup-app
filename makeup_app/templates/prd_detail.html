@@ -1,12 +1,20 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1 class="text-center">{{product.get("name")}}</h1>
-<div class="container">
-    <h3>Brand: {{product.get("brand")}}</h3>
-    <p>{{product.get("product_type")}}</p>
-    <p>{{ product.get("category")}}</p>
-
+<div class="container pb-5 pt-5 mb-5 mt-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <img class="card-img-top" src="{{ product.get('api_featured_image')}}">
+        </div>
+        <div class="col-lg-6">
+            <h1 class="">{{product.get("name")}}</h1>
+            <h3>Brand: {{product.get("brand")}}</h3>
+            <p>Product Type: {{product.get("product_type")}}</p>
+            <p>Product category: {{ product.get("category")}}</p>
+        </div>
+    </div>
+</div>
+<div class="container card my-2">
     <h3>Leave a Review</h3>
 
     <form method='POST' action="/new_review/{{product.get('id')}}">
