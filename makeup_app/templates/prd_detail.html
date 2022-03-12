@@ -8,45 +8,48 @@
         </div>
         <div class="col-lg-6">
             <h1 class="">{{product.get("name")}}</h1>
-            <h3>Brand: {{product.get("brand")}}</h3>
+            <h3>Brand: <a href = "/search/{{product.get('brand')}}">{{product.get("brand")}}</a></h3>
             <p>Product Type: {{product.get("product_type")}}</p>
             <p>Product category: {{ product.get("category")}}</p>
         </div>
     </div>
 </div>
-<div class="container card my-2">
-    <h3>Leave a Review</h3>
+<div class="container my-2">
+    <div class="container card my-2">
+        <h3>Leave a Review</h3>
 
-    <form method='POST' action="/new_review/{{product.get('id')}}">
-    <fieldset>
+        <form method='POST' action="/new_review/{{product.get('id')}}">
+        <fieldset>
+        
+            {{ review_form.csrf_token }}
     
-        {{ review_form.csrf_token }}
-
-
-        {{ review_form.rating.label}}
-        {{ review_form.rating}}
-        <ul>
-            {% for error in review_form.rating.errors %}
-                <li class="error">{{ error }}</li>
-            {% endfor %}
-        </ul>
-
-        {{ review_form.review.label}}
-        {{ review_form.review}}
-        <ul>
-            {% for error in review_form.review.errors %}
-                <li class="error">{{ error }}</li>
-            {% endfor %}
-        </ul>
-
-        {{ review_form.submit }}
-    </fieldset>
-</form> <br>
+    
+            {{ review_form.rating.label}}
+            {{ review_form.rating}}
+            <ul>
+                {% for error in review_form.rating.errors %}
+                    <li class="error">{{ error }}</li>
+                {% endfor %}
+            </ul>
+    
+            {{ review_form.review.label}}
+            {{ review_form.review}}
+            <ul>
+                {% for error in review_form.review.errors %}
+                    <li class="error">{{ error }}</li>
+                {% endfor %}
+            </ul>
+    
+            {{ review_form.submit }}
+        </fieldset>
+    </form> <br>
+    </div>
+    
 
 {% for review in reviews %}
 <div class="card my-2 p-2">
     <h3>{{review.created_by.username}}</h3>
-    <p>{{review.rating}}</p>
+    <p>Rating: {{review.rating}}</p>
     <p>{{review.review}}</p>
     {% if current_user == review.created_by %}
 

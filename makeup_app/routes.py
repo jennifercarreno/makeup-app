@@ -2,9 +2,9 @@ from crypt import methods
 from email.mime import image
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from makeup_app.models import User, Comment, Review
+from makeup_app.models import User, Review
 from makeup_app.extensions import app, db, bcrypt
-from makeup_app.forms import CommentForm, ReviewForm, SignUpForm, LoginForm
+from makeup_app.forms import  ReviewForm, SignUpForm, LoginForm
 from sqlalchemy import delete
 import requests, json
 
@@ -34,6 +34,15 @@ def search():
 
     return render_template('home.html', prds= prds)
 
+@main.route('/search/<product_brand>', methods=['GET', 'POST'])
+def search_brand(product_brand):
+    prds = []
+    brand = product_brand
+
+    for i in range(len(products)):
+        if products[i].get('brand') == brand:
+            prds.append(products[i])
+    return render_template('home.html', prds = prds)
 # filters
 
 # eyes
@@ -116,53 +125,15 @@ def prd_detail(product_id):
                 if review.prd_name == product.get("name"):
                     prd_reviews.append(review)
 
-            comment_form = CommentForm()
-            prd_comments = []
-            all_comments = Comment.query.all()
-            for comment in all_comments:
-           
-                if comment.prd == int(product_id):
-                    prd_comments.append(comment)
     return render_template('prd_detail.html', product = product, comment_form = comment_form, review_form = review_form, comments = prd_comments, reviews = prd_reviews)
 
+# collections
 
+@main.route('/collections', methods=['GET'])
+def collections():
+    return render_template('collections.html')
 # comments 
 
-# creates a new comment
-@main.route('/new_comment/<product_id>', methods=['POST'])
-@login_required
-def new_comment(product_id):
-    product = Product.query.get(product_id)
-    form = CommentForm()
-    prd_form = ProductForm()
-
-    if form.validate_on_submit():
-        new_comment = Comment(
-            comment = form.comment.data,
-            prd = product_id,
-            created_by = current_user
-
-        )
-
-        db.session.add(new_comment)
-        db.session.commit()
-
-        flash('Success! New Comment Added')
-        return redirect(url_for('main.prd_detail', product = product, product_id = product_id))
-    else:
-        print(" comment form not submitted ")
-        return render_template('prd_detail.html', product = product, form=prd_form, comment_form=form)
-
-# deletes a comment
-@main.route('/comment/<comment_id>/delete', methods=['POST'])
-@login_required
-def comment_delete(comment_id):
-    sql2 = delete(Comment).where(Comment.id == comment_id)
-
-    db.session.execute(sql2)
-    db.session.commit()
-    flash('Comment Deleted')
-    return redirect(url_for('main.homepage'))
 
 
 # authentication

@@ -16,9 +16,4 @@ class Review(db.Model):
     created_by = db.relationship('User')
 
 
-class Comment(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    comment = db.Column(db.String, nullable = False)
-    prd = db.Column(db.Integer, nullable = False)
-    created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    created_by = db.relationship('User')
+
