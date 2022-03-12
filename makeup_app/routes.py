@@ -25,15 +25,52 @@ def search():
     search = request.form['search']
     for i in range(len(products)):
 
-        if products[i].get("name") == search.lower():
+        if products[i].get("name").lower() == search.lower():
             prds.append(products[i])
         elif products[i].get("brand") == search.lower():
             prds.append(products[i])
-        elif products[i].get("product_type") == search.lower():
+        elif products[i].get("product_type").lower() == search.lower():
             prds.append(products[i])
 
     return render_template('home.html', prds= prds)
 
+# filters
+
+# eyes
+@main.route('/filter/eyes', methods=['GET', 'POST'])
+def filter_eyes():
+    prds = []
+    eyes = ['eyebrow', 'eyeliner', 'eyeshadow', 'mascara']
+    for i in range(len(eyes)):
+        for p in range(len(products)):
+            if products[p].get('product_type') == eyes[i]:
+                prds.append(products[p])
+
+    return render_template('home.html', prds=prds )
+
+# lips
+@main.route('/filter/lips', methods=['GET', 'POST'])
+def filter_lips():
+    prds = []
+    lips = ['lip liner', 'lipstick']
+    for i in range(len(lips)):
+        for p in range(len(products)):
+            if products[p].get('product_type') == lips[i]:
+                prds.append(products[p])
+
+    return render_template('home.html', prds=prds )
+
+# face
+@main.route('/filter/face', methods=['GET', 'POST'])
+def filter_face():
+    prds = []
+    face = ['blush', 'bronzer', 'foundation']
+    for i in range(len(face)):
+        for p in range(len(products)):
+            if products[p].get('product_type') == face[i]:
+                prds.append(products[p])
+
+    return render_template('home.html', prds=prds )
 
 # creates a new review
 @main.route('/new_review/<product_id>', methods=['GET', 'POST'])

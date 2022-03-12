@@ -16,13 +16,13 @@
                 <div class="row">
                     <a href="/" class="nav-link">Home</a>
 
-                    <a href="/new_product" class="nav-link">New Product</a>
+                    
 
                 </div>
                 <div class="row">
                 {% if current_user.is_authenticated %}
                 <!-- stuff you only want to show to logged-in users -->
-                <p>{{current_user.username}}</p>
+                <p class="my-auto">{{current_user.username}}</p>
                 <a href="/logout" class="nav-link">Log Out</a>
 
                 {% else %}
