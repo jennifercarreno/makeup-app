@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{collection.title}}</h1>
+<h3>{{collection.created_by.username}}</h3>
+
+{% for product in collection_products %}
+<p>{{ product.get('name')}} </p>
+{% endfor %}
+{% endblock %}

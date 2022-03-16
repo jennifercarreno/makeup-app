@@ -181,6 +181,20 @@ def add_product():
             flash(f'Sucess! new product added to {test_collection.title}')
     return redirect(url_for('main.collections'))
 
+# single collection, iterate through products (get the product from the id)
+@main.route('/collections/<collection_id>', methods=['GET'])
+def collection_detail(collection_id):
+    collection = Collection.query.get(collection_id)
+    collection_products = []
+
+    for prd in collection.products:
+        for i in range(len(products)):
+            if products[i].get('id') == int(prd):
+                collection_products.append(products[i])
+                # print(f'prd:{prd} product:{products[i]}')
+        
+    print(collection.products)
+    return render_template('collection_detail.html', collection = collection, collection_products = collection_products)
 
 # authentication
 
