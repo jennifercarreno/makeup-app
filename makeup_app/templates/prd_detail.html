@@ -8,7 +8,12 @@
         </div>
         <div class="col-lg-6">
             <h1 class="">{{product.get("name")}}</h1>
-            <h3>Brand: <a href = "/search/{{product.get('brand')}}">{{product.get("brand")}}</a></h3>
+            <h3>Brand: 
+                <form action="/search" method="POST">
+                    <input type="hidden" name="search" value="{{product.get('brand')}}">
+                    <input type="submit" value="{{product.get('brand')}}">
+                </form>
+            </h3>
             <p>Product Type: {{product.get("product_type")}}</p>
             <p>Product category: {{ product.get("category")}}</p>
 
@@ -63,7 +68,13 @@
     <p>Rating: {{review.rating}}</p>
     <p>{{review.review}}</p>
     {% if current_user == review.created_by %}
+    <div class="row">
 
+        <p><form method='POST' action= "/review/{{review.id}}/delete">
+            <button class="mx-2" type='submit'>Delete</button>
+        </form></p>
+
+    </div>
     {% endif %}
 </div>
 {% endfor %}

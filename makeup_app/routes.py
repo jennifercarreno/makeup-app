@@ -1,3 +1,4 @@
+from asyncore import file_dispatcher
 from crypt import methods
 from email.mime import image
 from flask import Blueprint, request, render_template, redirect, url_for, flash
@@ -12,6 +13,7 @@ main = Blueprint("main", __name__)
 auth = Blueprint("auth", __name__)
 api = requests.get('http://makeup-api.herokuapp.com/api/v1/products.json')
 products = json.loads(api.text)
+tags = ['Chemical Free', 'Gluten Free', 'Hypoallergenic', 'Organic', 'Vegan', 'Cruelty Free', 'Oil Free']
 
 # home page
 @main.route('/')
@@ -31,20 +33,29 @@ def search():
             prds.append(products[i])
         elif products[i].get("product_type").lower() == search.lower():
             prds.append(products[i])
+    return render_template('search_results.html', prds= prds, search = search, tags=tags)
 
-    return render_template('home.html', prds= prds)
-
-@main.route('/search/<product_brand>', methods=['GET', 'POST'])
-def search_brand(product_brand):
-    prds = []
-    brand = product_brand
-
-    for i in range(len(products)):
-        if products[i].get('brand') == brand:
-            prds.append(products[i])
-    return render_template('home.html', prds = prds)
 # filters
+@main.route('/filter', methods=['GET', 'POST'])
+def filter():
+    filtered_prd = []
+    prds = []
+    search = request.form['search']
+    filter = request.form['filter']
+    for i in range(len(products)):
 
+        if products[i].get("name").lower() == search.lower():
+            prds.append(products[i])
+        elif products[i].get("brand") == search.lower():
+            prds.append(products[i])
+        elif products[i].get("product_type").lower() == search.lower():
+            prds.append(products[i])
+
+    for prd in prds:
+        if filter in prd.get('tag_list'):
+            filtered_prd.append(prd)
+
+    return render_template('search_results.html', prds=filtered_prd, search = search, tags=tags)
 # eyes
 @main.route('/filter/eyes', methods=['GET', 'POST'])
 def filter_eyes():
@@ -109,6 +120,16 @@ def new_review(product_id):
         print(form.errors)
                 # render_template('prd_detail.html', product_id = product_id, product = product, review_form = review_form)
         return "error in submitting review"   
+
+# deletes a review
+@main.route('/review/<review_id>/delete', methods=['POST'])
+def delete_review(review_id):
+    del_rv = delete(Review).where(Review.id == review_id)
+
+    db.session.execute(del_rv)
+    db.session.commit()
+    flash('Review Deleted')
+    return redirect(url_for('main.homepage'))
 
 # displays a product
 @main.route('/product/<product_id>', methods=['GET', 'POST'])
@@ -196,6 +217,15 @@ def collection_detail(collection_id):
     print(collection.products)
     return render_template('collection_detail.html', collection = collection, collection_products = collection_products)
 
+# deletes a collection
+@main.route('/collections/<collection_id>/delete', methods=['POST'])
+def delete_collection(collection_id):
+    del_col = delete(Collection).where(Collection.id == collection_id)
+
+    db.session.execute(del_col)
+    db.session.commit()
+    flash('Collection Deleted')
+    return redirect(url_for('main.homepage'))
 # authentication
 
 # sign up

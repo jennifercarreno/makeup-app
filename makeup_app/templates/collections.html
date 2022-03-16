@@ -28,9 +28,13 @@
         {{ form.submit }}
     </fieldset>
 </form> <br>
-
-{% for i in test %}
-<h3><a href="/collections/{{i.id}}">{{i.title}}</a></h3>
-{% endfor %}
 </div>
+
+<div class="container card m-auto">
+    {% for i in test %}
+    <h3><a href="/collections/{{i.id}}">{{i.title}}</a></h3>
+    <p><strong>Created By: </strong>{{i.created_by.username}}</p>
+    {% endfor %}
+</div>
+
 {% endblock %}

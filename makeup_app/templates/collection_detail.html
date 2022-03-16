@@ -1,9 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>{{collection.title}}</h1>
-<h3>{{collection.created_by.username}}</h3>
 
-{% for product in collection_products %}
-<p>{{ product.get('name')}} </p>
-{% endfor %}
+<div class="container">
+    <h1>{{collection.title}}</h1>
+    <h3>{{collection.created_by.username}}</h3>
+    <p><em>{{collection.description}}</em></p>
+
+    <div class="row">
+        {% for prd in collection_products %}
+        <div class="card col-lg-3 py-3">
+        <img class="card-img-top" src="{{ prd.get('api_featured_image')}}">
+        <h3><a href="/product/{{prd.get('id')}}">{{ prd.get("brand")}} - {{ prd.get("name") }}</a></h3>
+
+    </div>
+    {% endfor %}
+
+    {% if current_user == collection.created_by %}
+    <div class="row">
+
+        <p><form method='POST' action= "/collections/{{collection.id}}/delete">
+            <button class="mx-2" type='submit'>Delete</button>
+        </form></p>
+        
+    </div>
+    {% endif %}
+</div>
+
 {% endblock %}
