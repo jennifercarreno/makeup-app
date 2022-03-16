@@ -1,1 +1,35 @@
 this is the collectioins page
+
+<div class="container card my-2">
+    <h3>Create a Collection</h3>
+
+    <form method='POST' action="/collections/new_collection">
+    <fieldset>
+    
+        {{ form.csrf_token }}
+
+
+        {{ form.title.label}}
+        {{ form.title}}
+        <ul>
+            {% for error in form.title.errors %}
+                <li class="error">{{ error }}</li>
+            {% endfor %}
+        </ul>
+
+        {{ form.description.label}}
+        {{ form.description}}
+        <ul>
+            {% for error in form.description.errors %}
+                <li class="error">{{ error }}</li>
+            {% endfor %}
+        </ul>
+
+        {{ form.submit }}
+    </fieldset>
+</form> <br>
+
+{% for i in test %}
+<h3>{{i.title}}</h3>
+{% endfor %}
+</div>

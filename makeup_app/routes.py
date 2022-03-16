@@ -2,9 +2,9 @@ from crypt import methods
 from email.mime import image
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
-from makeup_app.models import User, Review
+from makeup_app.models import Collection, User, Review
 from makeup_app.extensions import app, db, bcrypt
-from makeup_app.forms import  ReviewForm, SignUpForm, LoginForm
+from makeup_app.forms import  ReviewForm, SignUpForm, LoginForm, CollectionForm
 from sqlalchemy import delete
 import requests, json
 
@@ -125,15 +125,42 @@ def prd_detail(product_id):
                 if review.prd_name == product.get("name"):
                     prd_reviews.append(review)
 
-    return render_template('prd_detail.html', product = product, comment_form = comment_form, review_form = review_form, comments = prd_comments, reviews = prd_reviews)
+    return render_template('prd_detail.html', product = product, review_form = review_form, reviews = prd_reviews)
 
 # collections
 
-@main.route('/collections', methods=['GET'])
+@main.route('/collections', methods=['GET', 'POST'])
 def collections():
-    return render_template('collections.html')
+    form = CollectionForm()
+    test = []
+    collections = Collection.query.all()
+    for collection in collections:
+        if collection.title != None:
+            test.append(collection)
+
+    return render_template('collections.html', form = form, test = test)
 # comments 
 
+@main.route('/collections/new_collection', methods=['GET', 'POST'])
+def new_collection():
+    form  = CollectionForm()
+
+    if form.validate_on_submit():
+        print("form submitted")
+        new_collection = Collection(
+            title = form.title.data,
+            description = form.description.data,
+            products = [],
+            created_by = current_user
+        )
+        db.session.add(new_collection)
+        db.session.commit()
+
+        flash('Success! New Review Added')
+        return redirect(url_for('main.collections', form = form, collections = collections))
+    else:
+        print(form.errors)
+        return "error in submitting review"  
 
 
 # authentication

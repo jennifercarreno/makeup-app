@@ -57,19 +57,6 @@
 </div>
 {% endfor %}
 
-{% for comment in comments %}
-<div class="card my-2 p-2">
-    <h3>{{comment.created_by.username}}</h3>
-    <p>{{comment.comment}}</p>
-    {% if current_user == comment.created_by %}
-
-    <p><form method='POST' action= "/comment/{{comment.id}}/delete">
-        <button class="mx-2" type='submit'>Delete</button>
-    </form></p>
-
-    {% endif %}
-</div>
-{% endfor %}
 </div>
 
 

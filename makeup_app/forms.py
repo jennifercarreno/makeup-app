@@ -16,6 +16,10 @@ class ReviewForm(FlaskForm):
     review = TextAreaField('Review', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class CollectionForm(FlaskForm):
+    title = StringField('Collection Title', validators=[DataRequired(), Length(min=3, max=50)])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
 class SignUpForm(FlaskForm):
     username = StringField('User Name',

@@ -16,4 +16,10 @@ class Review(db.Model):
     created_by = db.relationship('User')
 
 
-
+class Collection(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(80), nullable = False)
+    description = db.Column(db.String(80), nullable = False)
+    products = []
+    created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    created_by = db.relationship('User')
