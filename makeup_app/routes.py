@@ -125,7 +125,13 @@ def prd_detail(product_id):
                 if review.prd_name == product.get("name"):
                     prd_reviews.append(review)
 
-    return render_template('prd_detail.html', product = product, review_form = review_form, reviews = prd_reviews)
+            collections = []
+            all_collections = Collection.query.all()
+            for collection in all_collections:
+                if collection.created_by == current_user:
+                    collections.append(collection)
+
+    return render_template('prd_detail.html', product = product, review_form = review_form, reviews = prd_reviews, collections = collections)
 
 # collections
 
@@ -137,9 +143,9 @@ def collections():
     for collection in collections:
         if collection.title != None:
             test.append(collection)
+            print(collection.created_by)
 
     return render_template('collections.html', form = form, test = test)
-# comments 
 
 @main.route('/collections/new_collection', methods=['GET', 'POST'])
 def new_collection():
@@ -161,6 +167,19 @@ def new_collection():
     else:
         print(form.errors)
         return "error in submitting review"  
+
+@main.route('/collections/add_product', methods=['GET', 'POST'])
+def add_product():
+    product = request.form['product_id']
+    selected_collection = request.form['collection_id']
+    test_collection = Collection.query.get(selected_collection)
+
+    for collection in Collection.query.all():
+        if collection.created_by == current_user:
+            test_collection.products.append(product)
+            print(test_collection.products)
+            flash(f'Sucess! new product added to {test_collection.title}')
+    return redirect(url_for('main.collections'))
 
 
 # authentication

@@ -30,6 +30,6 @@ this is the collectioins page
 </form> <br>
 
 {% for i in test %}
-<h3>{{i.title}}</h3>
+<h3>{{i.title}} {{i.created_by.username}}</h3>
 {% endfor %}
 </div>

@@ -11,6 +11,17 @@
             <h3>Brand: <a href = "/search/{{product.get('brand')}}">{{product.get("brand")}}</a></h3>
             <p>Product Type: {{product.get("product_type")}}</p>
             <p>Product category: {{ product.get("category")}}</p>
+
+            <form action="/collections/add_product" method="POST">
+                <input type="hidden" name="product_id" value="{{ product.get('id') }}">
+                <select name="collection_id">
+                  {% for collection in collections %}
+                    <option value="{{ collection.id }}">{{ collection.title }}</option>
+                  {% endfor %}
+                </select>
+                <input type="submit" value="Add to playlist" class="btn">
+            </form>   
+
         </div>
     </div>
 </div>
