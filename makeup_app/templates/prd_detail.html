@@ -11,7 +11,7 @@
             <h3>Brand: 
                 <form action="/search" method="POST">
                     <input type="hidden" name="search" value="{{product.get('brand')}}">
-                    <input type="submit" value="{{product.get('brand')}}">
+                    <input type="submit" value="{{product.get('brand')}}" class="hidden_button">
                 </form>
             </h3>
             <p>Product Type: {{product.get("product_type")}}</p>
@@ -24,7 +24,7 @@
                     <option value="{{ collection.id }}">{{ collection.title }}</option>
                   {% endfor %}
                 </select>
-                <input type="submit" value="Add to playlist" class="btn">
+                <input type="submit" value="Add to collection" class="button">
             </form>   
 
         </div>
@@ -56,7 +56,7 @@
                 {% endfor %}
             </ul>
     
-            {{ review_form.submit }}
+                {{ review_form.submit }}
         </fieldset>
     </form> <br>
     </div>

@@ -1,0 +1,51 @@
+
+
+a:not(button) {
+    color: rgb(111, 20, 54);
+}
+
+a:hover:not(button) {
+    color: #ad2831;
+}
+
+.card {
+    border: none;
+}
+
+button {
+    background-color: #800e13;
+    color: white;
+    border-radius:5px;
+    border:none;
+}
+
+button:hover {
+    background-color: #ad2831;
+}
+
+.button {
+    background-color:#800e13;
+    color: white;
+    border:none;
+    border-radius:5px;
+}
+
+.button:hover {
+    background-color: #ad2831;
+    color: white;
+}
+
+.hidden_button {
+    background-color: white;
+    color: #800e13;
+    border: none;
+    padding: 0px;
+}
+
+.jumbotron{
+    background-image: url("https://images.squarespace-cdn.com/content/v1/51882e59e4b00d33ee9bf77b/1554843230583-01KP01WI1PUK2VVCQ5YN/Picture1.jpg");
+    /* background-image: url("https://thefader-res.cloudinary.com/private_images/c_limit,w_1024/c_crop,h_532,w_1023,x_1,y_644/w_1600,c_limit,f_auto,q_auto:eco/Glossier_PDF_V1_R4_lg4nzr/Glossier_PDF_V1_R4_lg4nzr.jpg"); */
+    height: 50vh;
+    background-size: contain;
+    color: #800e13;
+}

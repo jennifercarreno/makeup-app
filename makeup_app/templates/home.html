@@ -7,17 +7,17 @@
 
 <div class="d-flex align-content-center flex-wrap jumbotron text-center">
     <div class="container text-center">
-        <h3 class="card-title">Search by Product Name, Brand, or Product Type</h3>
+        <h3 class="card-title" ></h3>
 
         <form action="/search" method="POST" class="">
-            <input type="text" name="search" class="">
-            <button type="submit">Search</button>
+            <input type="text" name="search" class="col-lg-9 form-control-lg" placeholder="Search by Product Name, Brand, or Product Type">
+            <button type="submit" class="form-control-lg">Search</button>
         </form>
     
         <div class="my-2">
-            <button><a href="/filter/eyes">Eyes</a></button>
-            <button><a href="/filter/lips">Lips</a></button>
-            <button><a href="/filter/face">Face</a></button>
+            <button ><a href="/filter/eyes" class="button">Eyes</a></button>
+            <button ><a href="/filter/lips" class="button">Lips</a></button>
+            <button ><a href="/filter/face" class="button">Face</a></button>
         </div>
     </div>
 </div>
@@ -29,7 +29,7 @@
     {% for prd in prds %}
     <div class="card col-lg-3 py-3">
         <img class="card-img-top" src="{{ prd.get('api_featured_image')}}">
-        <h3><a href="/product/{{prd.get('id')}}">{{ prd.get("brand")}} - {{ prd.get("name") }}</a></h3>
+        <h3><a href="/product/{{prd.get('id')}}">{{ prd.get("brand").capitalize()}} - {{ prd.get("name") }}</a></h3>
     </div>
     {% endfor %}
 </div>
