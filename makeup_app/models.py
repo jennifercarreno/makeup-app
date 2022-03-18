@@ -1,7 +1,8 @@
 from itertools import product
+
+from sqlalchemy import Column, ForeignKey, Integer
 from makeup_app.extensions import db
 from flask_login import UserMixin
-from routes import products
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
@@ -16,11 +17,10 @@ class Review(db.Model):
     created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     created_by = db.relationship('User')
 
-
 class Collection(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(80), nullable = False)
     description = db.Column(db.String(80), nullable = False)
-    items = db.relationship('Products')
+    products = []
     created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     created_by = db.relationship('User')

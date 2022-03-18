@@ -123,6 +123,7 @@ def new_review(product_id):
 
 # deletes a review
 @main.route('/review/<review_id>/delete', methods=['POST'])
+@login_required
 def delete_review(review_id):
     del_rv = delete(Review).where(Review.id == review_id)
 
@@ -162,13 +163,13 @@ def collections():
     test = []
     collections = Collection.query.all()
     for collection in collections:
-        if collection.title != None:
-            test.append(collection)
-            print(collection.created_by)
+        test.append(collection)
+        print(collection.created_by)
 
     return render_template('collections.html', form = form, test = test)
 
 @main.route('/collections/new_collection', methods=['GET', 'POST'])
+@login_required
 def new_collection():
     form  = CollectionForm()
 
@@ -177,7 +178,7 @@ def new_collection():
         new_collection = Collection(
             title = form.title.data,
             description = form.description.data,
-            items = 'empty',
+            products = 'empty',
             created_by = current_user
         )
         db.session.add(new_collection)
@@ -187,9 +188,10 @@ def new_collection():
         return redirect(url_for('main.collections', form = form, collections = collections))
     else:
         print(form.errors)
-        return "error in submitting review"  
+        return "error in submitting review"    
 
 @main.route('/collections/add_product', methods=['GET', 'POST'])
+@login_required
 def add_product():
     product = request.form['product_id']
     selected_collection = request.form['collection_id']
@@ -197,7 +199,7 @@ def add_product():
 
     for collection in Collection.query.all():
         if collection.created_by == current_user:
-            test_collection.items.append(product)
+            test_collection.products.append(product)
             print(test_collection.products)
             flash(f'Sucess! new product added to {test_collection.title}')
     return redirect(url_for('main.collections'))
@@ -206,12 +208,16 @@ def add_product():
 @main.route('/collections/<collection_id>', methods=['GET'])
 def collection_detail(collection_id):
     collection = Collection.query.get(collection_id)
+    print(collection)
+    print(collection.id, collection_id)
     collection_products = []
+    
 
     for prd in collection.products:
         for i in range(len(products)):
             if products[i].get('id') == int(prd):
-                collection_products.append(products[i])
+                if collection.id == int(collection_id):
+                    collection_products.append(products[i])
                 # print(f'prd:{prd} product:{products[i]}')
         
     print(collection.products)
@@ -219,6 +225,7 @@ def collection_detail(collection_id):
 
 # deletes a collection
 @main.route('/collections/<collection_id>/delete', methods=['POST'])
+@login_required
 def delete_collection(collection_id):
     del_col = delete(Collection).where(Collection.id == collection_id)
 
