@@ -1,28 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1 class="text-center">Jennifer's Makeup App</h1>
-
-<p class="text-center"><em>The best place to find the hottest makeup products!</em></p>
-
-<!-- <div class="d-flex align-content-center flex-wrap jumbotron text-center">
-    <div class="container text-center">
-        <h3 class="card-title">Search by Product Name, Brand, or Product Type</h3>
-
-        <form action="/search" method="POST" class="">
-            <input type="text" name="search" class="">
-            <button type="submit">Search</button>
-        </form>
-    
-        <div class="my-2">
-            <button><a href="/filter/eyes">Eyes</a></button>
-            <button><a href="/filter/lips">Lips</a></button>
-            <button><a href="/filter/face">Face</a></button>
-        </div>
-    </div>
-</div> -->
-
-
 <div class="container">
     <h2>Results for {{search}}</h2>
     <form action="/filter" method="POST">
@@ -33,7 +11,7 @@
             <option value="{{ tag }}">{{ tag }}</option>
             {% endfor %}
         </select>
-        <input type="submit" value="Apply Filter" class="btn">
+        <input type="submit" value="Apply Filter" class="button">
 
     </form>
 <div class="row">

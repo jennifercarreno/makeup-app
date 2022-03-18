@@ -76,8 +76,8 @@ def filter_lips():
     for i in range(len(lips)):
         for p in range(len(products)):
             if products[p].get('product_type') == lips[i]:
+                print(type(products[p].get('brand')))
                 prds.append(products[p])
-
     return render_template('home.html', prds=prds )
 
 # face
@@ -177,7 +177,7 @@ def new_collection():
         new_collection = Collection(
             title = form.title.data,
             description = form.description.data,
-            products = [],
+            items = 'empty',
             created_by = current_user
         )
         db.session.add(new_collection)
@@ -197,7 +197,7 @@ def add_product():
 
     for collection in Collection.query.all():
         if collection.created_by == current_user:
-            test_collection.products.append(product)
+            test_collection.items.append(product)
             print(test_collection.products)
             flash(f'Sucess! new product added to {test_collection.title}')
     return redirect(url_for('main.collections'))

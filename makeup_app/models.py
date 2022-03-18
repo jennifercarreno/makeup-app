@@ -1,6 +1,7 @@
 from itertools import product
 from makeup_app.extensions import db
 from flask_login import UserMixin
+from routes import products
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key = True)
@@ -20,6 +21,6 @@ class Collection(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(80), nullable = False)
     description = db.Column(db.String(80), nullable = False)
-    products = []
+    items = db.relationship('Products')
     created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     created_by = db.relationship('User')

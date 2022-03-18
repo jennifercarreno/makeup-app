@@ -1,14 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1 class="text-center">Jennifer's Makeup App</h1>
-
-<p class="text-center"><em>The best place to find the hottest makeup products!</em></p>
-
 <div class="d-flex align-content-center flex-wrap jumbotron text-center">
     <div class="container text-center">
-        <h3 class="card-title" ></h3>
-
+        <div class="row">
+            <div class="col-lg-4">
+        
+            </div>
+            <div class="col-lg-4">
+                <img src="/static/jennifer.png" class="mx-auto card-img-top">
+            </div>
+            <div class="col-lg-4">
+                
+            </div>
+        </div>
         <form action="/search" method="POST" class="">
             <input type="text" name="search" class="col-lg-9 form-control-lg" placeholder="Search by Product Name, Brand, or Product Type">
             <button type="submit" class="form-control-lg">Search</button>
@@ -29,13 +34,14 @@
     {% for prd in prds %}
     <div class="card col-lg-3 py-3">
         <img class="card-img-top" src="{{ prd.get('api_featured_image')}}">
-        <h3><a href="/product/{{prd.get('id')}}">{{ prd.get("brand").capitalize()}} - {{ prd.get("name") }}</a></h3>
+        <h3><a href="/product/{{prd.get('id')}}">{{ prd.get("brand")}} - {{ prd.get("name") }}</a></h3>
     </div>
     {% endfor %}
 </div>
     
    
 </div>
-
+<div class="footer text-center">
+</div>
 
 {% endblock %}

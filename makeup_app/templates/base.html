@@ -14,26 +14,38 @@
             {% endfor %}
             <nav class="navbar">
                 <div class="row">
-                    <a href="/" class="nav-link">Home</a>
-                    <a href="/collections" class="nav-link">Collections</a>
+                    <a class="navbar-brand mx-2" href="/"  style="width: 50px">
+                        <img src="/static/flower.png" style="width: 50px">
+                    </a>
+                    <a href="/collections" class="nav-link d-flex align-items-center">Collections</a>
 
-                    
-
+                </div>
+                <div class="row">
+                    <form action="/search" method="POST" class="form-inline">
+                        <div class="row">
+                            <input type="text" name="search" class="mx-2 form-control-sm d-flex align-items-center" placeholder="Search by Product Name, Brand, or Product Type">
+                            <button type="submit" class="form-control-sm d-flex align-items-center">Search</button>
+                        </div>
+                        
+                    </form>
                 </div>
                 <div class="row">
                 {% if current_user.is_authenticated %}
                 <!-- stuff you only want to show to logged-in users -->
-                <p class="my-auto">{{current_user.username}}</p>
-                <a href="/logout" class="nav-link">Log Out</a>
+                <p class="my-auto d-flex align-items-center">{{current_user.username}}</p>
+                <a href="/logout" class="nav-link d-flex align-items-center">Log Out</a>
 
                 {% else %}
                     <!-- stuff you only want to show to logged-out users -->
-                    <a href="/login" class="nav-link">Log In</a>
-                    <a href="/signup" class="nav-link">Sign Up</a>
+                    <a href="/login" class="nav-link d-flex align-items-center">Log In</a>
+                    <a href="/signup" class="nav-link d-flex align-items-center">Sign Up</a>
                 {% endif %}
             </div>
-            </nav>
-            {% block content %}{% endblock %}
+            </nav> 
         </div>
+        {% block content %}{% endblock %}
+        
     </body>
+    
+
 </html>
