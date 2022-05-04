@@ -4,6 +4,11 @@
 ## Project Purpose
 Yelp for everyday makeup consumers. Discover new products through the point of view of an ordinary person, not a makeup artist.
 
+## Built With
+- Pyhton Flask
+- SQLAlchemy
+- Jinja Templates
+
 ## How it Works
 1. Users search for a product, brand, or browse through preset tags (eyes, lips face)
 2. Users read reviews on a product
